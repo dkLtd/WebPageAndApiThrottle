@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Web;
 using WebApiThrottle.Net;
 
 namespace WebApiThrottle
@@ -41,7 +42,12 @@ namespace WebApiThrottle
             return IpAddressParser.GetClientIp(request);
         }
 
-        internal ThrottleLogEntry ComputeLogEntry(string requestId, RequestIdentity identity, ThrottleCounter throttleCounter, string rateLimitPeriod, long rateLimit, HttpRequestMessage request)
+        internal IPAddress GetClientIp(HttpRequest request)
+        {
+            return IpAddressParser.GetClientIp(request);
+        }
+
+        internal ThrottleLogEntry ComputeLogEntry(string requestId, RequestIdentity identity, ThrottleCounter throttleCounter, string rateLimitPeriod, long rateLimit, HttpRequestMessage request = null)
         {
             return new ThrottleLogEntry
             {

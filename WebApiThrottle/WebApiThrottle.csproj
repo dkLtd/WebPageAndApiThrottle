@@ -107,6 +107,7 @@
     <Compile Include="ThrottlingFilter.cs" />
     <Compile Include="ThrottlingHandler.cs" />
     <Compile Include="Logging\TracingThrottleLogger.cs" />
+    <Compile Include="ThrottlingModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

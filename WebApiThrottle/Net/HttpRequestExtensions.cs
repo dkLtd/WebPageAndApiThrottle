@@ -57,5 +57,34 @@ namespace WebApiThrottle.Net
 
         }
 
+        public static string GetClientIpAddress(this HttpRequest request)
+        {
+            // Always return all zeroes for any failure (my calling code expects it)
+            string ipAddress = "0.0.0.0";
+
+            // Check if request is available
+            if (request != null)
+            {
+                // Attempt to get client IP address
+                if (!String.IsNullOrEmpty(request.UserHostAddress))
+                    ipAddress = request.UserHostAddress;
+
+                // Check for X-Forwarded-For header for proxy scenarios
+                string forwardedFor = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+                // Use the first IP address in the X-Forwarded-For list
+                if (!String.IsNullOrEmpty(forwardedFor))
+                    ipAddress = forwardedFor.Split(',')[0].Trim();
+
+                // Attempt to get client IP address from server variables
+                if (ipAddress == "0.0.0.0" && request.ServerVariables != null &&
+                    request.ServerVariables["REMOTE_ADDR"] != null)
+                {
+                    ipAddress = request.ServerVariables["REMOTE_ADDR"];
+                }
+            }
+
+            return ipAddress;
+        }
     }
 }
